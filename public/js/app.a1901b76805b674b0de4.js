@@ -27689,15 +27689,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['registered'],
     data: function data() {
         return {
-            count: [0, 0],
-            labels: ['Registered', 'Online']
+            count: 0,
+            labels: ['Online']
         };
     },
     mounted: function mounted() {
-        this.count[0] = this.registered;
         this.update();
         this.drawChart();
     },
@@ -27711,7 +27709,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     labels: this.labels,
                     datasets: [{
                         label: '# of Users',
-                        data: this.count,
+                        data: [this.count],
                         borderWidth: 1
                     }]
                 },
@@ -27730,13 +27728,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             Echo.join('chart').here(function (users) {
-                _this.count[1] = users.length;
+                _this.count = users.length;
                 _this.drawChart();
             }).joining(function (user) {
-                _this.count[1]++;
+                _this.count++;
                 _this.drawChart();
             }).leaving(function (user) {
-                _this.count[1]--;
+                _this.count--;
                 _this.drawChart();
             });
         }

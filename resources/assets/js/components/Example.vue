@@ -18,15 +18,13 @@
     import Chart from 'chart.js'
 
     export default {
-        props: ['registered'],
         data() {
             return {
-                count: [0, 0],
-                labels: ['Registered', 'Online']
+                count: 0,
+                labels: ['Online']
             }
         },
         mounted() {
-            this.count[0] = this.registered;
             this.update();
             this.drawChart();
         },
@@ -39,7 +37,7 @@
                         labels: this.labels,
                         datasets: [{
                             label: '# of Users',
-                            data: this.count,
+                            data: [this.count],
                             borderWidth: 1
                         }]
                     },
@@ -57,15 +55,15 @@
             update() {
                 Echo.join('chart')
                     .here((users) => {
-                        this.count[1] = users.length;
+                        this.count = users.length;
                         this.drawChart();
                     })
                     .joining((user) => {
-                        this.count[1]++;
+                        this.count++;
                         this.drawChart();
                     })
                     .leaving((user) => {
-                        this.count[1]--;
+                        this.count--;
                         this.drawChart();
                     });
             }
